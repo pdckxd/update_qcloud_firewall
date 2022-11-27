@@ -1,27 +1,36 @@
 # update_qcloud_firewall
 
 ## 1. Build for openwrt x86_64
-1. Pull openwrt docker container with specific SDK version
-    ```bash
-    $ docker pull openwrtorg/sdk:x86_64-openwrt-22.03
-    ```
-2. Run docker container
-    ```bash
-    $ docker run -it openwrtorg/sdk:x86_64-openwrt-22.03 /bin/bash --name x86_64_openwrt_SDK_2203
-    # optional: to re-launch the stopped container and continue the work
-    $ docker start x86_64_openwrt_SDK_2203
-    $ docker exec -it x86_64_openwrt_SDK_2203 /bin/bash
-    ```
+1. Option 1 - Docker container
+    1. Pull openwrt docker container with specific SDK version
+        ```bash
+        $ docker pull openwrtorg/sdk:x86_64-openwrt-22.03
+        ```
+    2. Run docker container
+        ```bash
+        $ docker run -it openwrtorg/sdk:x86_64-openwrt-22.03 /bin/bash --name x86_64_openwrt_SDK_2203
+        # optional: to re-launch the stopped container and continue the work
+        $ docker start x86_64_openwrt_SDK_2203
+        $ docker exec -it x86_64_openwrt_SDK_2203 /bin/bash
+        ```
+2. Option 2 - Ubuntu OS (better to have 20.04+)
+    1. Download SDK
+        ```bash
+        $ cd ~/Downloads
+        $ wget https://downloads.openwrt.org/releases/22.03.2/targets/x86/64/openwrt-sdk-22.03.2-x86-64_gcc-11.2.0_musl.Linux-x86_64.tar.xz
+        $ tar Jxvf openwrt-sdk-22.03.2-x86-64_gcc-11.2.0_musl.Linux-x86_64.tar.xz
+        ```
 3. Verify SDK works
     ```bash
-    # in container
+    # in container or in ubuntu os
     $ echo $PWD
-    /home/build
+    # if you are in container
     $ export STAGING_DIR="$PWD/staging_dir"
     $ export PATH="$PWD/$(echo staging_dir/toolchain-*/bin):$PATH"
-
+    # if you are in Ubuntu OS
+    $ export STAGING_DIR=~/Downloads/openwrt-sdk-22.03.2-x86-64_gcc-11.2.0_musl.Linux-x86_64/staging_dir/
+    $ export PATH=~/Downloads/openwrt-sdk-22.03.2-x86-64_gcc-11.2.0_musl.Linux-x86_64/staging_dir/toolchain-x86_64_gcc-11.2.0_musl/bin
     $ x86_64-openwrt-linux-musl-gcc -v
-    Reading specs from /home/build/openwrt/staging_dir/toolchain-x86_64_gcc-11.2.0_musl/bin/../lib/gcc/x86_64-openwrt-linux-musl/11.2.0/specs
     ...omit a lot of output...
     gcc version 11.2.0 (OpenWrt GCC 11.2.0 r19803-9a599fee93)
     $ cat hello.c
@@ -67,11 +76,12 @@
 1. In Ubuntu system (better to have 20.04+), Download toolchain from [this link](https://master.dl.sourceforge.net/project/dsgpl/Tool%20Chain/DSM%206.2.2%20Tool%20Chains/Marvell%20Armada%2037xx%20Linux%204.4.59/armada37xx-gcc494_glibc220_armv8-GPL.txz?viasf=1)
     ```bash
     $ sudo apt-get install build-essential
-    $ mkdir ~/synology_dev
-    $ cd ~/synology_dev
+    $ cd ~/Downloads
     $ tar Jxvf armada37xx-gcc494_glibc220_armv8-GPL.txz
     $ export PATH=$HOME/Downloads/aarch64-unknown-linux-gnueabi/bin:$PATH
     # test if toolchain works well
+    $ cd ~/synology_dev
+    $ mkdir ~/synology_dev
     $ cat hello.c
     #include <stdio.h>
 
