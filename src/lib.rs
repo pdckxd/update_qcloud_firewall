@@ -86,7 +86,7 @@ impl WebClient {
         WebClient()
     }
 
-    /// Wrap tokio async function to calll reqwest async function and give back the result or error
+    /// Wrap tokio async function to call reqwest async function and give back the result or error
     /// through callback function
     pub fn getIpConfig(&self, mut callback: Box<dyn WebApiCallback + Send>) {
         (*RUN_TIME).block_on(async move {
