@@ -11,7 +11,9 @@ all:
 	@echo "  make build_rust"
 	@echo "  make test_rust"
 	@echo "  make build_hello_x86_musl"
+	@echo "  make build_hello_aarch64"
 	@echo "  make build_rust_x86_musl"
+	@echo "  make build_rust_aarch64"
 
 build_hello: build_rust
 	gcc -o hello hello.c target/release/libupdate_qcloud_firewall.a -lpthread -lm -ldl
@@ -19,11 +21,17 @@ build_hello: build_rust
 build_hello_x86_musl: build_rust_x86_musl
 	x86_64-openwrt-linux-musl-gcc -o hello hello.c target/x86_64-unknown-linux-musl/release/libupdate_qcloud_firewall.a -lpthread -lm -ldl
 
+build_hello_aarch64: build_rust_aarch64
+	aarch64-unknown-linux-gnueabi-gcc -o hello hello.c target/aarch64-unknown-linux-gnu/release/libupdate_qcloud_firewall.a -lpthread -lm -ldl
+
 build_rust:
 	cargo build --release --verbose
 
 build_rust_x86_musl:
 	CC=x86_64-openwrt-linux-musl-gcc cargo build --target=x86_64-unknown-linux-musl --release --verbose
+
+build_rust_aarch64:
+	CC=aarch64-unknown-linux-gnueabi-gcc cargo build --target aarch64-unknown-linux-gnu --release --verbose
 
 # optional step
 test_rust:
