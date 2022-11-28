@@ -123,6 +123,39 @@
     $ ./hello
     ```
 
-## 3. Build for Ios 15.3 (for flutter FFI)
+## 3. Build for MacOS x86_64
+1. Install rust toolchain
+    ```bash
+    $ brew install rustup-init
+    $ rustup target add x86_64-apple-darwin
+    ```
+2. Build project
+    ```bash
+    $ git clone git@github.com:pdckxd/update_qcloud_firewall.git
+    $ cd update_qcloud_firewall
+    $ make build_hello_x86_apple
+    ```
+3. Run the binary
+    ```bash
+    $ ./hello
+    ```
+## 4. Build for MacOS aarch64 (Apple Silicon)
+1. Install rust toolchain
+    ```bash
+    $ brew install rustup-init
+    $ rustup target add aarch64-apple-darwin
+    ```
+2. Build project
+    ```bash
+    $ git clone git@github.com:pdckxd/update_qcloud_firewall.git
+    $ cd update_qcloud_firewall
+    $ make build_hello_aarch64_apple
+    ```
+3. Run the binary
+    ```bash
+    $ ./hello
+    ```
+
+## 5. Build for Ios 15.3 (for flutter FFI)
 
 ## TODO: to reduce the size of binary
