@@ -16,6 +16,8 @@ int main(int argc, char** argv) {
     // int sum = add(1, 2);
     // printf("%d\n", sum);
     //
+    const char* ver = rust_version();
+    printf("version: %s\n", ver);
     printf("Creating webapi client\n");
     struct WebClient* webClient = create_webapi_client();
 

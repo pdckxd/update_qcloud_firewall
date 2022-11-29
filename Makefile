@@ -14,10 +14,14 @@ all:
 	@echo "  make build_hello_aarch64"
 	@echo "  make build_hello_aarch64_apple"
 	@echo "  make build_hello_x86_apple"
+	@echo "  make build_hello_ios_apple"
+	@echo "  make build_hello_aarch64_ios_sim_apple"
 	@echo "  make build_rust_x86_musl"
 	@echo "  make build_rust_aarch64"
 	@echo "  make build_rust_aarch64_apple"
 	@echo "  make build_rust_x86_apple"
+	@echo "  make build_rust_ios_apple"
+	@echo "  make build_rust_aarch64_ios_sim_apple"
 
 # general build with default sdk in system
 build_hello: build_rust
@@ -35,6 +39,24 @@ build_hello_aarch64_apple: build_rust_aarch64_apple
 build_hello_x86_apple: build_rust_x86_apple
 	gcc -o hello hello.c target/x86_64-apple-darwin/release/libupdate_qcloud_firewall.a -lpthread -lm -ldl -framework CoreFoundation -framework Security
 
+build_hello_ios_apple: build_rust_ios_apple
+	$(eval COMPILER=$(shell xcrun --sdk iphoneos --find clang))
+	$(eval SYSROOT=$(shell xcrun --sdk iphoneos --show-sdk-path))
+	@echo $(COMPILER)
+	@echo $(SYSROOT)
+	# @COMPILER="`xcrun --sdk iphoneos --find clang` -isysroot `xcrun --sdk iphoneos --show-sdk-path` -arch arm64"
+	$(COMPILER) -o hello hello.c target/aarch64-apple-ios/release/libupdate_qcloud_firewall.a -lpthread -lm -ldl -isysroot $(SYSROOT) -framework CoreFoundation -framework Security -arch arm64
+
+build_hello_aarch64_ios_sim_apple: build_rust_aarch64_ios_sim_apple
+	$(eval COMPILER=$(shell xcrun --sdk iphoneos --find clang))
+	$(eval SYSROOT=$(shell xcrun --sdk iphonesimulator --show-sdk-path))
+	@echo $(COMPILER)
+	@echo $(SYSROOT)
+	# @COMPILER="`xcrun --sdk iphoneos --find clang` -isysroot `xcrun --sdk iphoneos --show-sdk-path` -arch arm64"
+	$(COMPILER) -o hello hello.c target/aarch64-apple-ios-sim/release/libupdate_qcloud_firewall.a -lpthread -lm -ldl -isysroot $(SYSROOT) -framework CoreFoundation -framework Security -arch arm64
+
+
+
 build_rust:
 	cargo build --release --verbose
 
@@ -49,6 +71,12 @@ build_rust_x86_apple:
 
 build_rust_aarch64_apple:
 	cargo build --target aarch64-apple-darwin --release --verbose
+	
+build_rust_ios_apple:
+	cargo build --target aarch64-apple-ios --release --verbose
+
+build_rust_aarch64_ios_sim_apple:
+	cargo build --target aarch64-apple-ios-sim --release --verbose
 
 # optional step
 test_rust:

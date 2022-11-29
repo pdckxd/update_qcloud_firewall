@@ -130,6 +130,11 @@ pub extern "C" fn create_webapi_client() -> *mut WebClient {
     Box::into_raw(Box::new(WebClient::new()))
 }
 
+#[no_mangle]
+pub extern "C" fn rust_version() -> *const c_char {
+    CString::new(format!("{:?}", reqwest::Version::HTTP_10)).unwrap().into_raw()
+}
+
 /// .
 ///
 /// # Panics

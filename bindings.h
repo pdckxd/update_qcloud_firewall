@@ -42,6 +42,8 @@ typedef struct IpConfigCallback {
  */
 struct WebClient *create_webapi_client(void);
 
+const char *rust_version(void);
+
 /**
  * .
  *

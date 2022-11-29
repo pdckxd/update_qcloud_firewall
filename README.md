@@ -159,3 +159,35 @@
 ## 5. Build for Ios 15.3 (for flutter FFI)
 
 ## TODO: to reduce the size of binary
+
+## Howtos
+1. How to check dependencies libraries of a binary on MacOS
+    ```bash
+    $ otool -L hello
+    ``` 
+2. How to show name list (symbol table)
+    ```bash
+    $ nm target/aarch64-apple-darwin/release/libupdate_qcloud_firewall.a
+    ```
+3. How to check arch of binary in MacOS
+    ```bash
+    $ lipo -info target/aarch64-apple-darwin/release/libupdate_qcloud_firewall.a
+    ```
+4. How to launch IOS simulator
+    ```bash
+    $ open -a Simulator
+    ```
+
+## Troubleshoot
+1. No expected result in output of `fd -tf llvm-nm /opt/homebrew`
+    * This is because fd ignore the folders defined in .gitignore. Calling `fd -tf -I llvm-nm /opt/homebrew` can fix the issue
+2. No expected symbol (`_rust_version`) from `nm libupdate_qcloud_firewall.a`, also got failure `Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/nm: error: libupdate_qcloud_firewall.a(core-f8f67d13897da474.core.6d850d29-cgu.0.rcgu.o) Invalid value (Producer: 'LLVM15.0.0-rust-1.65.0-stable' Reader: 'LLVM APPLE_1_1300.0.29.3_0')`
+    * This is because MacOS built-in nm (llvm-nm) version is lower than llvm used by rust
+    * You will need to install new llvm by `brew install llvm`
+    * Then call `/opt/homebrew/Cellar/llvm/15.0.5/bin/llvm-nm libupdate_qcloud_firewall.a|grep _rust_version`
+
+## References
+1. [Finally running Rust natively on a Flutter plugin! Here is how]( https://medium.com/flutter-community/finally-running-rust-natively-on-a-flutter-plugin-here-is-how-6f2826eb1735)
+    * This is really useful to help to resolve error "Failed to lookup symbol: symbol not found"
+2. https://github.com/shekohex/flutterust
+    * Good sample to demo flutter interop with static library build by Rust
