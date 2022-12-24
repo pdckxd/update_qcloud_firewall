@@ -4,19 +4,44 @@ version = "0.1.0"
 edition = "2021"
 
 [lib]
-crate-type = ["staticlib", "cdylib"]
+crate-type = ["staticlib", "cdylib", "lib"]
 bench = false
+
+[[bin]]
+name = "try"
+path = "src/bin/try.rs"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-reqwest = { version = "*", features = ["blocking", "json"]}
-tokio = { version = "*", features = ["full"]}
-serde = { version = "*", features = ["derive"] }
-serde_json = { version = "*", default-features = false, features = ["alloc"] }
+reqwest = { version = "0.11", features = ["blocking", "json"]}
+tokio = { version = "1.22", features = ["full"]}
+serde = { version = "1.0", features = ["derive"] }
+serde_json = { version = "1.0", default-features = false, features = ["alloc"] }
 # openssl = {version = "0.10", features = ["vendored"]}
 openssl-src = "300.0.11+3.0.7"
 lazy_static = "1.4.0"
+dotenv = "0.15"
+hmac-sha256 = "1.1.6"
+sha2 = "0.10"
+base16ct = "0.1.1"
+hmac = "0.12.1"
+chrono = "0.4"
+clap = {version = "4.0.29", features = ["derive"]}
+
+[target.x86_64-unknown-linux-musl.dependencies]
+openssl = {version = "0.10", features = ["vendored"]}
+
+[target.aarch64-unknown-linux-gnu.dependencies]
+openssl = {version = "0.10", features = ["vendored"]}
+
+[target.x86_64-apple-darwin.dependencies]
+
+[target.aarch64-apple-darwin.dependencies]
+
+[target.aarch64-apple-ios.dependencies]
+
+[target.aarch64-apple-ios-sim.dependencies]
 
 [build-dependencies]
 cbindgen = "0.24.3"

@@ -4,7 +4,10 @@
 #include <stdlib.h>
 
 typedef struct WebClient {
-
+  char *tmp_file_path;
+  char *instance_id;
+  char *token_id;
+  char *token_key;
 } WebClient;
 
 typedef struct UserAgentNative {
@@ -37,12 +40,22 @@ typedef struct IpConfigCallback {
   void (*onError)(void *owner, const char *arg);
 } IpConfigCallback;
 
-/**
- * Create WebClient. For C, it creates a WebClient struct pointer
- */
-struct WebClient *create_webapi_client(void);
+typedef struct FirewallCallback {
+  void *owner;
+  void (*onResult)(void *owner, const char *arg);
+  void (*onError)(void *owner, const char *arg);
+} FirewallCallback;
 
 const char *rust_version(void);
+
+/**
+ * Create WebClient. For C, it creates a WebClient struct pointer
+ * # Safety
+ */
+struct WebClient *create_webapi_client(const char *tmp_file_path,
+                                       const char *instance_id,
+                                       const char *token_id,
+                                       const char *token_key);
 
 /**
  * .
@@ -69,4 +82,32 @@ void free_swapi_client(struct WebClient *client);
  *
  * .
  */
+void free_string(char *s);
+
+/**
+ * .
+ *
+ * # Panics
+ *
+ * Panics if .
+ *
+ * # Safety
+ *
+ * .
+ */
 void get_ip_config_native(struct WebClient *client, struct IpConfigCallback outer_listener);
+
+/**
+ * .
+ *
+ * # Panics
+ *
+ * Panics if .
+ *
+ * # Safety
+ *
+ * .
+ */
+void recreate_firewall_policy(struct WebClient *client,
+                              const char *payload,
+                              struct FirewallCallback outer_listener);
